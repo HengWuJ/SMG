@@ -1,0 +1,59 @@
+server:
+  port: 7998
+
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: knowledge-service
+          uri: http://localhost:8002
+          predicates:
+            - Path=/knowledge/**
+          filters:
+            - StripPrefix=1
+        - id: monitor-service
+          uri: http://localhost:8005
+          predicates:
+            - Path=/monitor/**
+          filters:
+            - StripPrefix=1
+        - id: log-service
+          uri: http://localhost:8009
+          predicates:
+            - Path=/log/**
+          filters:
+            - StripPrefix=1
+        - id: user-service
+          uri: http://localhost:8001
+          predicates:
+            - Path=/user/**
+          filters:
+            - StripPrefix=1
+        - id: system-service
+          uri: http://localhost:8006
+          predicates:
+            - Path=/system/**
+          filters:
+            - StripPrefix=1
+        - id: maintenance-service
+          uri: http://localhost:8004
+          predicates:
+            - Path=/maintenance/**
+          filters:
+            - StripPrefix=1
+        - id: kbm-service
+          uri: http://localhost:8003
+          predicates:
+            - Path=/kbm/**
+          filters:
+            - StripPrefix=1
+
+  main:
+    web-application-type: reactive

@@ -1,0 +1,45 @@
+server:
+  port: 8005
+
+spring:
+  application:
+    name: monitor-service
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848
+      config:
+        import-check:
+          enabled: false
+    stream:
+      bindings:
+        processSensorData-in-0:
+          destination: sensorDataTopic # 输入通道对应的 Kafka 主题
+          group: sensorGroup
+        sensorData-out-0: # 输出通道
+          destination: sensorDataOutTopic # 输出到的 Kafka 主题
+      kafka:
+        binder:
+          brokers: localhost:9092
+  elasticsearch:
+    uris: http://localhost:9200
+  datasource:
+    url: jdbc:mysql://localhost:3306/smg?useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+log:
+  service:
+    url: http://localhost:8009
+
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+
+logging:
+  level:
+    root: info
+    org.springframework.cloud: debug
+    org.springframework.data.redis: debug
+    org.springframework.kafka: debug
+    org.springframework.data.elasticsearch: debug
+
