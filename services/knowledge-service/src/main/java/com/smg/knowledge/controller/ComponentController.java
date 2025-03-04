@@ -68,5 +68,33 @@ public class ComponentController {
         return componentService.removeFaultFromComponent(componentId, faultId);
     }
 
+//    @GetMapping("/{faultyComponentId}/disassembly-order")
+//    public List<Component> getDisassemblyOrder(@PathVariable String faultyComponentId) {
+//        return componentService.getDisassemblyOrder(faultyComponentId);
+//    }
+
+    @GetMapping("/{faultyComponentId}/disassembly-order")
+    public List<String> getDisassemblyOrder(@PathVariable String faultyComponentId) {
+        logger.info("Received request to get disassembly order for component with ID: {}", faultyComponentId);
+        return componentService.getDisassemblyOrder(faultyComponentId);
+    }
+
+    @GetMapping("/{faultyComponentId}/assembly-order")
+    public List<String> getAssemblyOrder(@PathVariable String faultyComponentId) {
+        logger.info("Received request to get assembly order for component with ID: {}", faultyComponentId);
+        return componentService.getAssemblyOrder(faultyComponentId);
+    }
+
+    @PostMapping("/{sourceId}/precedes/{targetId}")
+    public void createPrecedesRelationship(@PathVariable String sourceId, @PathVariable String targetId) {
+        logger.info("Received request to create PRECEDES relationship from {} to {}", sourceId, targetId);
+        componentService.createPrecedesRelationship(sourceId, targetId);
+    }
+
+    @DeleteMapping("/{sourceId}/precedes/{targetId}")
+    public void deletePrecedesRelationship(@PathVariable String sourceId, @PathVariable String targetId) {
+        logger.info("Received request to delete PRECEDES relationship from {} to {}", sourceId, targetId);
+        componentService.deletePrecedesRelationship(sourceId, targetId);
+    }
 
 }

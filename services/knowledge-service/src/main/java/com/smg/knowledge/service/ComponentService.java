@@ -9,8 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ComponentService {
@@ -105,5 +108,115 @@ public class ComponentService {
         Fault fault = faultRepository.findById(faultId).orElseThrow(() -> new RuntimeException("Fault not found"));
         component.getFaults().remove(fault);
         return componentRepository.save(component);
+    }
+
+//    public List<Component> getDisassemblyOrder(String faultyComponentId) {
+//        List<Component> allComponents = componentRepository.getTopologicalOrder();
+//        return allComponents.stream()
+//                .takeWhile(c -> !c.getComponentId().equals(faultyComponentId))
+//                .collect(Collectors.toList());
+//    }
+
+//    public List<Component> getDisassemblyOrder(String faultyComponentId) {
+//        List<Component> allComponents = componentRepository.getTopologicalSort();
+//        return allComponents.stream()
+//                .takeWhile(c -> !c.getComponentId().equals(faultyComponentId))
+//                .collect(Collectors.toList());
+//    }
+
+//    public List<Component> getDisassemblyOrder(String faultyComponentId) {
+//        Set<String> visited = new HashSet<>();
+//        List<Component> disassemblyOrder = new ArrayList<>();
+//        dfsDisassembly(faultyComponentId, visited, disassemblyOrder);
+//        return disassemblyOrder;
+//    }
+//
+//    private void dfsDisassembly(String componentId, Set<String> visited, List<Component> disassemblyOrder) {
+//        if (visited.contains(componentId)) {
+//            return;
+//        }
+//        visited.add(componentId);
+//
+//        Set<Component> adjacentFrom = componentRepository.findDirectAdjacentFrom(componentId);
+//        for (Component component : adjacentFrom) {
+//            dfsDisassembly(component.getComponentId(), visited, disassemblyOrder);
+//        }
+//
+//        disassemblyOrder.add(componentRepository.findById(componentId).orElseThrow());
+//    }
+
+//    public List<Component> getAssemblyOrder(String faultyComponentId) {
+//        List<Component> allComponents = componentRepository.getReverseTopologicalOrder();
+//        return allComponents.stream()
+//                .takeWhile(c -> !c.getComponentId().equals(faultyComponentId))
+//                .collect(Collectors.toList());
+//    }
+//    public List<Component> getAssemblyOrder(String faultyComponentId) {
+//        Set<String> visited = new HashSet<>();
+//        List<Component> assemblyOrder = new ArrayList<>();
+//        dfsAssembly(faultyComponentId, visited, assemblyOrder);
+//        return assemblyOrder;
+//    }
+//
+//    private void dfsAssembly(String componentId, Set<String> visited, List<Component> assemblyOrder) {
+//        if (visited.contains(componentId)) {
+//            return;
+//        }
+//        visited.add(componentId);
+//
+//        assemblyOrder.add(componentRepository.findById(componentId).orElseThrow());
+//
+//        Set<Component> adjacentTo = componentRepository.findDirectAdjacentTo(componentId);
+//        for (Component component : adjacentTo) {
+//            dfsAssembly(component.getComponentId(), visited, assemblyOrder);
+//        }
+//    }
+
+    public void createPrecedesRelationship(String sourceId, String targetId) {
+        logger.info("Creating PRECEDES relationship from {} to {}", sourceId, targetId);
+        if (sourceId == null || targetId == null) {
+            logger.error("Source ID or Target ID is null");
+            throw new IllegalArgumentException("Source ID and Target ID cannot be null");
+        }
+        componentRepository.createPrecedesRelationship(sourceId, targetId);
+        componentRepository.createAdjacentToRelationship(targetId, sourceId);
+    }
+
+    public void deletePrecedesRelationship(String sourceId, String targetId) {
+        logger.info("Deleting PRECEDES relationship from {} to {}", sourceId, targetId);
+        if (sourceId == null || targetId == null) {
+            logger.error("Source ID or Target ID is null");
+            throw new IllegalArgumentException("Source ID and Target ID cannot be null");
+        }
+        componentRepository.deletePrecedesRelationship(sourceId, targetId);
+        componentRepository.deleteAdjacentToRelationship(targetId, sourceId);
+    }
+
+
+    public List<String> getDisassemblyOrder(String faultyComponentId) {
+        Set<String> visited = new HashSet<>();
+        List<String> disassemblyOrder = new ArrayList<>();
+        disassemblyOrderHelper(faultyComponentId, visited, disassemblyOrder);
+        return disassemblyOrder;
+    }
+
+    private void disassemblyOrderHelper(String componentId, Set<String> visited, List<String> order) {
+        Component component = componentRepository.findById(componentId).orElse(null);
+        if (component != null && !visited.contains(componentId)) {
+            visited.add(componentId);
+//            Set<Component> adjacentComponents = componentRepository.findDirectAdjacentFrom(componentId);
+            Set<Component> adjacentComponents = componentRepository.findDirectAdjacentTo(componentId);
+            for (Component adjacentComponent : adjacentComponents) {
+                disassemblyOrderHelper(adjacentComponent.getComponentId(), visited, order);
+            }
+            order.add(componentId);
+        }
+    }
+
+    public List<String> getAssemblyOrder(String faultyComponentId) {
+        List<String> disassemblyOrder = getDisassemblyOrder(faultyComponentId);
+        List<String> assemblyOrder = new ArrayList<>(disassemblyOrder);
+        java.util.Collections.reverse(assemblyOrder);
+        return assemblyOrder;
     }
 }
