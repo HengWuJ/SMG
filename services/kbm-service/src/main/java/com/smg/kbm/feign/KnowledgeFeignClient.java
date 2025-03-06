@@ -86,7 +86,7 @@ public interface KnowledgeFeignClient {
     List<Solution> getAllSolutions();
 
     @PostMapping("/solution")
-    Solution saveSolutionWithFault(@RequestBody Solution solution, @RequestParam String faultId);
+    Solution saveSolution(@RequestBody Solution solution);
 
     @GetMapping("/solution/{id}")
     Solution getSolutionById(@PathVariable String id);
@@ -96,6 +96,15 @@ public interface KnowledgeFeignClient {
 
     @DeleteMapping("/solution/{id}")
     void deleteSolution(@PathVariable String id);
+
+    @PostMapping("/solution/withFault")
+    Solution saveSolutionWithFault(@RequestBody Solution solution, @RequestParam String faultId);
+
+    @PostMapping("/solution/{solutionId}/addTool")
+    Solution addToolToSolution(@PathVariable String solutionId, @RequestParam String toolId);
+
+    @PostMapping("/solution/{solutionId}/removeTool")
+    Solution removeToolFromSolution(@PathVariable String solutionId, @RequestParam String toolId);
 
     // ProcedureController
     @PostMapping("/procedure")
@@ -148,4 +157,30 @@ public interface KnowledgeFeignClient {
     @DeleteMapping("/component/{componentId}/faults/{faultId}")
     Component removeFaultFromComponent(@PathVariable String componentId, @PathVariable String faultId);
 
-}
+    @GetMapping("/component/{faultyComponentId}/disassembly-order")
+    List<String> getDisassemblyOrder(@PathVariable String faultyComponentId);
+
+    @GetMapping("/component/{faultyComponentId}/assembly-order")
+    List<String> getAssemblyOrder(@PathVariable String faultyComponentId);
+
+    @PostMapping("/component/{sourceId}/precedes/{targetId}")
+    void createPrecedesRelationship(@PathVariable String sourceId, @PathVariable String targetId);
+
+    @DeleteMapping("/component/{sourceId}/precedes/{targetId}")
+    void deletePrecedesRelationship(@PathVariable String sourceId, @PathVariable String targetId);
+
+    @PostMapping("/tool")
+    Tool saveTool(@RequestBody Tool tool);
+
+    @GetMapping("/tool")
+    List<Tool> getAllTools();
+
+    @GetMapping("/tool/{id}")
+    Tool getToolById(@PathVariable String id);
+
+    @PutMapping("/tool/{id}")
+    Tool updateTool(@PathVariable String id, @RequestBody Tool tool);
+
+    @DeleteMapping("/tool/{id}")
+    void deleteTool(@PathVariable String id);
+    }

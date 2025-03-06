@@ -71,7 +71,7 @@ public class ProcedureService {
         existingProcedure.setFrequency(procedure.getFrequency());
         existingProcedure.setRequiredSkills(procedure.getRequiredSkills());
         existingProcedure.setSafetyPrecautions(procedure.getSafetyPrecautions());
-        Set<Step> steps = (Set<Step>) stepRepository.findAllById(stepIds);
+        Set<Step> steps = new HashSet<>(stepRepository.findAllById(stepIds));
         existingProcedure.setSteps(steps);
         return procedureRepository.save(existingProcedure);
     }

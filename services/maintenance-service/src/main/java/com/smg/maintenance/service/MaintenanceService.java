@@ -201,4 +201,14 @@ public class MaintenanceService {
         logger.info("Getting all procedures");
         return knowledgeFeignClient.getAllProcedures();
     }
+
+    public List<String> getDisassemblyOrder(String faultyComponentId) {
+        logger.info("Getting disassembly order for component with ID: {}", faultyComponentId);
+        return knowledgeFeignClient.getDisassemblyOrder(faultyComponentId);
+    }
+
+    public List<String> getAssemblyOrder(String faultyComponentId) {
+        logger.info("Getting assembly order for component with ID: {}", faultyComponentId);
+        return knowledgeFeignClient.getAssemblyOrder(faultyComponentId);
+    }
 }

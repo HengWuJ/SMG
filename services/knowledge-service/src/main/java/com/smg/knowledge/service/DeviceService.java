@@ -76,7 +76,7 @@ public class DeviceService {
 //        existingDevice.setMaintenanceSchedule(device.getMaintenanceSchedule());
 //        existingDevice.setOperationalStatus(device.getOperationalStatus());
         existingDevice.setLastMaintenanceDate(device.getLastMaintenanceDate());
-        Set<Component> components = (Set<Component>) componentRepository.findAllById(componentIds);
+        Set<Component> components = new HashSet<>(componentRepository.findAllById(componentIds));
         existingDevice.setComponents(components);
         return deviceRepository.save(existingDevice);
     }

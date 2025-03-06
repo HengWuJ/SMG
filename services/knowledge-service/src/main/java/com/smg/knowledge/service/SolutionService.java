@@ -2,8 +2,10 @@ package com.smg.knowledge.service;
 
 import com.smg.knowledge.node.Fault;
 import com.smg.knowledge.node.Solution;
+import com.smg.knowledge.node.Tool;
 import com.smg.knowledge.repository.FaultRepository;
 import com.smg.knowledge.repository.SolutionRepository;
+import com.smg.knowledge.repository.ToolRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class SolutionService {
 
     @Autowired
     private FaultRepository faultRepository;
+
+    @Autowired
+    private  ToolRepository toolRepository;
 
     public Solution saveSolutionWithFault(Solution solution, String faultId) {
         logger.info("Saving solution with fault: {}, faultId: {}", solution, faultId);
@@ -73,5 +78,34 @@ public class SolutionService {
     public List<Solution> getAllSolutions() {
         logger.info("Getting all solutions");
         return solutionRepository.findAll();
+    }
+
+    public void saveSolution(Solution solution) {
+        logger.info("Saving solution: {}", solution);
+        solutionRepository.save(solution);
+    }
+
+    public Solution addToolToSolution(String solutionId, String toolId) {
+        logger.info("Adding tool with ID: {} to solution with ID: {}", toolId, solutionId);
+        if (solutionId == null || toolId == null) {
+            logger.error("solutionId or toolId is null");
+            throw new IllegalArgumentException("solutionId and toolId cannot be null");
+        }
+        Solution solution = solutionRepository.findById(solutionId).orElseThrow(() -> new RuntimeException("Solution not found"));
+        Tool tool = toolRepository.findById(toolId).orElseThrow(() -> new RuntimeException("Tool not found"));
+        solution.getTools().add(tool);
+        return solutionRepository.save(solution);
+    }
+
+    public Solution removeToolFromSolution(String solutionId, String toolId) {
+        logger.info("Removing tool with ID: {} from solution with ID: {}", toolId, solutionId);
+        if (solutionId == null || toolId == null) {
+            logger.error("solutionId or toolId is null");
+            throw new IllegalArgumentException("solutionId and toolId cannot be null");
+        }
+        Solution solution = solutionRepository.findById(solutionId).orElseThrow(() -> new RuntimeException("Solution not found"));
+        Tool tool = toolRepository.findById(toolId).orElseThrow(() -> new RuntimeException("Tool not found"));
+        solution.getTools().remove(tool);
+        return solutionRepository.save(solution);
     }
 }

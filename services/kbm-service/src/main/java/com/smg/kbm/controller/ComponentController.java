@@ -89,4 +89,32 @@ public class ComponentController {
         createLog(String.format("Removing fault with ID: %s from component with ID: %s", faultId, componentId), "System", true);
         return kbmService.removeFaultFromComponent(componentId, faultId);
     }
+
+    @GetMapping("/{faultyComponentId}/disassembly-order")
+    public List<String> getDisassemblyOrder(@PathVariable String faultyComponentId) {
+        logger.info("Received request to get disassembly order for component with ID: {}", faultyComponentId);
+        createLog(String.format("Getting disassembly order for component with ID: %s", faultyComponentId), "System", true);
+        return kbmService.getDisassemblyOrder(faultyComponentId);
+    }
+
+    @GetMapping("/{faultyComponentId}/assembly-order")
+    public List<String> getAssemblyOrder(@PathVariable String faultyComponentId) {
+        logger.info("Received request to get assembly order for component with ID: {}", faultyComponentId);
+        createLog(String.format("Getting assembly order for component with ID: %s", faultyComponentId), "System", true);
+        return kbmService.getAssemblyOrder(faultyComponentId);
+    }
+
+    @PostMapping("/{sourceId}/precedes/{targetId}")
+    public void createPrecedesRelationship(@PathVariable String sourceId, @PathVariable String targetId) {
+        logger.info("Received request to create precedes relationship between components with IDs: {} and {}", sourceId, targetId);
+        createLog(String.format("Creating precedes relationship between components with IDs: %s and %s", sourceId, targetId), "System", true);
+        kbmService.createPrecedesRelationship(sourceId, targetId);
+    }
+
+    @DeleteMapping("/{sourceId}/precedes/{targetId}")
+    public void deletePrecedesRelationship(@PathVariable String sourceId, @PathVariable String targetId) {
+        logger.info("Received request to delete precedes relationship between components with IDs: {} and {}", sourceId, targetId);
+        createLog(String.format("Deleting precedes relationship between components with IDs: %s and %s", sourceId, targetId), "System", true);
+        kbmService.deletePrecedesRelationship(sourceId, targetId);
+    }
 }

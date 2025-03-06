@@ -22,6 +22,6 @@ public class Fault implements Serializable {
     private String rootCause;// 根本原因
 
 //    @JsonBackReference
-    @Relationship(type = "SOLVED_BY", direction = Relationship.Direction.INCOMING)
+    @Relationship(type = "SOLVED_BY", direction = Relationship.Direction.OUTGOING)
     private Set<Solution> solutions;
 }

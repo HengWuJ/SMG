@@ -55,4 +55,10 @@ public interface KnowledgeFeignClient {
 
     @GetMapping("/procedure")
     List<Procedure> getAllProcedures();
+
+    @GetMapping("/component/{faultyComponentId}/disassembly-order")
+    List<String> getDisassemblyOrder(@PathVariable String faultyComponentId);
+
+    @GetMapping("/component/{faultyComponentId}/assembly-order")
+    List<String> getAssemblyOrder(@PathVariable String faultyComponentId);
 }

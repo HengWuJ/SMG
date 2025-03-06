@@ -115,4 +115,16 @@ public class FaultController {
         createLog(String.format("Searching faults by views with deviceDescription: %s, componentDescription: %s, faultDescription: %s", deviceDescription, componentDescription, faultDescription), "System", true);
         return maintenanceService.searchFaultsByViews(deviceDescription, componentDescription, faultDescription);
     }
+
+    @GetMapping("/{faultyComponentId}/disassembly-order")
+    public List<String> getDisassemblyOrder(@PathVariable String faultyComponentId) {
+        logger.info("Received request to get disassembly order for component with ID: {}", faultyComponentId);
+        return maintenanceService.getDisassemblyOrder(faultyComponentId);
+    }
+
+    @GetMapping("/{faultyComponentId}/assembly-order")
+    public List<String> getAssemblyOrder(@PathVariable String faultyComponentId) {
+        logger.info("Received request to get assembly order for component with ID: {}", faultyComponentId);
+        return maintenanceService.getAssemblyOrder(faultyComponentId);
+    }
 }

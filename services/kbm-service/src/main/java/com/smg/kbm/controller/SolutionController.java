@@ -33,11 +33,18 @@ public class SolutionController {
         logFeignClient.createLog(log);
     }
 
-    @PostMapping
+    @PostMapping("/withFault")
     public Solution saveSolutionWithFault(@RequestBody Solution solution, @RequestParam String faultId) {
         logger.info("Request received to save a new solution with fault ID: {}", faultId);
         createLog(String.format("Saving a new solution with ID: %s associated with fault ID: %s", solution.getSolutionId(), faultId), "System", true);
         return kbmService.saveSolutionWithFault(solution, faultId);
+    }
+
+    @PostMapping
+    public Solution saveSolution(@RequestBody Solution solution) {
+        logger.info("Request received to save a new solution: {}", solution);
+        createLog(String.format("Saving a new solution with ID: %s", solution.getSolutionId()), "System", true);
+        return kbmService.saveSolution(solution);
     }
 
     @GetMapping("/{id}")
@@ -60,4 +67,19 @@ public class SolutionController {
         createLog(String.format("Deleting solution with ID: %s", id), "System", true);
         kbmService.deleteSolution(id);
     }
+
+    @PostMapping("/{solutionId}/addTool")
+    public Solution addToolToSolution(@PathVariable String solutionId, @RequestParam String toolId) {
+        logger.info("Request received to add tool with ID: {} to solution with ID: {}", toolId, solutionId);
+        createLog(String.format("Adding tool with ID: %s to solution with ID: %s", toolId, solutionId), "System", true);
+        return kbmService.addToolToSolution(solutionId, toolId);
+    }
+
+    @PostMapping("/{solutionId}/removeTool")
+    public Solution removeToolFromSolution(@PathVariable String solutionId, @RequestParam String toolId) {
+        logger.info("Request received to remove tool with ID: {} from solution with ID: {}", toolId, solutionId);
+        createLog(String.format("Removing tool with ID: %s from solution with ID: %s", toolId, solutionId), "System", true);
+        return kbmService.removeToolFromSolution(solutionId, toolId);
+    }
+
 }

@@ -20,6 +20,8 @@ public class Solution implements Serializable {
     private int effectivenessRating;// 效果评分
     private String materialsUsed;
 
+    @Relationship(type = "USES_TOOL", direction = Relationship.Direction.OUTGOING)
+    private Set<Tool> tools;
 //    @JsonManagedReference
 //    @Relationship(type = "SOLVES", direction = Relationship.Direction.OUTGOING)
 //    private Fault fault;

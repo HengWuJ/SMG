@@ -157,6 +157,11 @@ public class KbmService {
         return knowledgeFeignClient.saveSolutionWithFault(solution, faultId);
     }
 
+    public Solution saveSolution(Solution solution) {
+        logger.info("Saving solution: {}", solution);
+        return knowledgeFeignClient.saveSolution(solution);
+    }
+
     public Solution getSolutionById(String id) {
         logger.info("Getting solution by ID: {}", id);
         return knowledgeFeignClient.getSolutionById(id);
@@ -171,6 +176,17 @@ public class KbmService {
         logger.info("Deleting solution with ID: {}", id);
         knowledgeFeignClient.deleteSolution(id);
     }
+
+    public Solution addToolToSolution(String solutionId, String toolId) {
+        logger.info("Adding tool with ID: {} to solution with ID: {}", toolId, solutionId);
+        return knowledgeFeignClient.addToolToSolution(solutionId, toolId);
+    }
+
+    public Solution removeToolFromSolution(String solutionId, String toolId) {
+        logger.info("Removing tool with ID: {} from solution with ID: {}", toolId, solutionId);
+        return knowledgeFeignClient.removeToolFromSolution(solutionId, toolId);
+    }
+
 
     // Procedure related methods
     public Procedure saveProcedure(Procedure procedure, Set<String> stepIds) {
@@ -253,6 +269,35 @@ public class KbmService {
         logger.info("Removing fault with ID: {} from component with ID: {}", faultId, componentId);
         return knowledgeFeignClient.removeFaultFromComponent(componentId, faultId);
     }
+
+
+
+    // Tool related methods
+    public Tool saveTool(Tool tool) {
+        logger.info("Saving tool: {}", tool);
+        return knowledgeFeignClient.saveTool(tool);
+    }
+
+    public List<Tool> getAllTools() {
+        logger.info("Getting all tools");
+        return knowledgeFeignClient.getAllTools();
+    }
+
+    public Tool getToolById(String id) {
+        logger.info("Getting tool by ID: {}", id);
+        return knowledgeFeignClient.getToolById(id);
+    }
+
+    public Tool updateTool(String id, Tool tool) {
+        logger.info("Updating tool with ID: {}, tool: {}", id, tool);
+        return knowledgeFeignClient.updateTool(id, tool);
+    }
+
+    public void deleteTool(String id) {
+        logger.info("Deleting tool with ID: {}", id);
+        knowledgeFeignClient.deleteTool(id);
+    }
+
 
 //    public void exportNodesToLocalFile(String filePath) throws IOException, CsvRequiredFieldEmptyException, CsvDataTypeMismatchException {
 //        logger.info("Exporting all nodes to CSV and saving to local file: {}", filePath);
@@ -613,6 +658,26 @@ public class KbmService {
 
             knowledgeFeignClient.saveDevice(device, null);
         }
+    }
+
+    public List<String> getDisassemblyOrder(String faultyComponentId) {
+        logger.info("Getting disassembly order for component with ID: {}", faultyComponentId);
+        return knowledgeFeignClient.getDisassemblyOrder(faultyComponentId);
+    }
+
+    public List<String> getAssemblyOrder(String faultyComponentId) {
+        logger.info("Getting assembly order for component with ID: {}", faultyComponentId);
+        return knowledgeFeignClient.getAssemblyOrder(faultyComponentId);
+    }
+
+    public void createPrecedesRelationship(String sourceId, String targetId){
+        logger.info("Creating PRECEDES relationship from {} to {}", sourceId, targetId);
+        knowledgeFeignClient.createPrecedesRelationship(sourceId, targetId);
+    }
+
+    public void deletePrecedesRelationship(String sourceId, String targetId){
+        logger.info("Deleting PRECEDES relationship from {} to {}", sourceId, targetId);
+        knowledgeFeignClient.deletePrecedesRelationship(sourceId, targetId);
     }
 }
 

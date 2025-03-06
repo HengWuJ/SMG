@@ -24,7 +24,7 @@ public class SolutionController {
         return solutionService.getAllSolutions();
     }
 
-    @PostMapping
+    @PostMapping("/withFault")
     public Solution saveSolutionWithFault(@RequestBody Solution solution, @RequestParam String faultId) {
         logger.info("Received request to save solution: {}, faultId: {}", solution, faultId);
         return solutionService.saveSolutionWithFault(solution, faultId);
@@ -47,4 +47,24 @@ public class SolutionController {
         logger.info("Received request to delete solution with ID: {}", id);
         solutionService.deleteSolution(id);
     }
+
+    @PostMapping
+    public void saveSolutionWithFault(@RequestBody Solution solution) {
+        logger.info("Received request to save solution: {}, faultId: {}", solution);
+        solutionService.saveSolution(solution);
+    }
+
+    @PostMapping("/{solutionId}/addTool")
+    public Solution addToolToSolution(@PathVariable String solutionId, @RequestParam String toolId) {
+        logger.info("Received request to add tool with ID: {} to solution with ID: {}", toolId, solutionId);
+        return solutionService.addToolToSolution(solutionId, toolId);
+    }
+
+    @PostMapping("/{solutionId}/removeTool")
+    public Solution removeToolFromSolution(@PathVariable String solutionId, @RequestParam String toolId) {
+        logger.info("Received request to remove tool with ID: {} from solution with ID: {}", toolId, solutionId);
+        return solutionService.removeToolFromSolution(solutionId, toolId);
+    }
+
+
 }
