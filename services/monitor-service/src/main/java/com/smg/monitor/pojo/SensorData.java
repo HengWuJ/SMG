@@ -15,7 +15,7 @@ import java.time.ZonedDateTime;
 @Document(indexName = "sensordata")
 public class SensorData {
 
-    @Id // Marks this field as the document ID in Elasticsearch.
+    @Id
     private String id;
 
     @Field(type = FieldType.Double)

@@ -106,7 +106,7 @@ public class FaultController {
         logFeignClient.createFaultReport(faultReport);
     }
 
-    @GetMapping("/search-by-views")
+    @GetMapping("/search")
     public List<Fault> searchFaultsByViews(
             @RequestParam(required = false) String deviceDescription,
             @RequestParam(required = false) String componentDescription,

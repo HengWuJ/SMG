@@ -9,7 +9,7 @@ import java.util.List;
 @Mapper
 public interface LogMapper {
 
-    @Select("SELECT * FROM logs")
+    @Select("SELECT * FROM logs ORDER BY timestamp DESC")
     List<Log> findAll();
 
     @Insert("INSERT INTO logs(content, timestamp, user, successful) VALUES(#{content}, #{timestamp}, #{user}, #{successful})")
