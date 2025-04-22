@@ -679,6 +679,10 @@ public class KbmService {
         logger.info("Deleting PRECEDES relationship from {} to {}", sourceId, targetId);
         knowledgeFeignClient.deletePrecedesRelationship(sourceId, targetId);
     }
+
+    public List<Solution> getAllSolutions() {
+        return knowledgeFeignClient.getAllSolutions();
+    }
 }
 
 

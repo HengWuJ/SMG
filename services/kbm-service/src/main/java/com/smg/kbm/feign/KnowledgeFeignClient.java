@@ -80,6 +80,9 @@ public interface KnowledgeFeignClient {
     @DeleteMapping("/fault/{faultId}/solutions/{solutionId}")
     Fault removeSolutionFromFault(@PathVariable String faultId, @PathVariable String solutionId);
 
+    @GetMapping("/views/{faultId}")
+    Component getComponentByFaultId(@PathVariable String faultId);
+
 
     // SolutionController
     @GetMapping("/solution")

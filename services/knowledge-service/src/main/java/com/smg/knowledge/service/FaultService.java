@@ -1,7 +1,9 @@
 package com.smg.knowledge.service;
 
+import com.smg.knowledge.node.Component;
 import com.smg.knowledge.node.Fault;
 import com.smg.knowledge.node.Solution;
+import com.smg.knowledge.repository.ComponentRepository;
 import com.smg.knowledge.repository.FaultRepository;
 import com.smg.knowledge.repository.SolutionRepository;
 import org.slf4j.Logger;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -23,6 +26,9 @@ public class FaultService {
 
     @Autowired
     private SolutionRepository solutionRepository;
+
+    @Autowired
+    private ComponentService componentRepository;
 
     public Fault saveFaultWithSolutions(Fault fault, Set<String> solutionIds) {
         logger.info("Saving fault with solutions: {}, solutionIds: {}", fault, solutionIds);
@@ -123,5 +129,13 @@ public class FaultService {
     public List<Fault> searchFaults(String deviceDescription, String componentDescription, String faultDescription) {
         logger.info("Searching faults with deviceDescription: {}, componentDescription: {}, faultDescription: {}", deviceDescription, componentDescription, faultDescription);
         return faultRepository.searchFaults(deviceDescription, componentDescription, faultDescription);
+    }
+
+    public Component getComponentByFaultId(String faultId) {
+        logger.info("Getting component by fault ID: {}", faultId);
+        String componentId = faultRepository.findComponentsByFaultId(faultId).get(0);
+        System.out.println("666666666666666666                 "+componentId);
+        return componentRepository.findById(componentId);
+        //return faultRepository.findComponentsByFaultId(faultId).stream().findFirst().orElse(null);
     }
 }

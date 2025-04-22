@@ -1,6 +1,8 @@
 package com.smg.knowledge.repository;
 
+import com.smg.knowledge.node.Component;
 import com.smg.knowledge.node.Fault;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
 import org.springframework.stereotype.Repository;
@@ -23,4 +25,11 @@ public interface FaultRepository extends Neo4jRepository<Fault, String> {
         RETURN f
         """)
     List<Fault> searchFaults(String deviceDescription, String componentDescription, String faultDescription);
+
+    @Query("""
+        MATCH (c:Component)-[:CAUSES]->(f:Fault {faultId: $faultId})
+        RETURN c.componentId AS componentId
+    """)
+    List<String> findComponentsByFaultId(@Param("faultId") String faultId);
+
 }

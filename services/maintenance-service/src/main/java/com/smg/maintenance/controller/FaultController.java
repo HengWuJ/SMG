@@ -1,5 +1,6 @@
 package com.smg.maintenance.controller;
 
+import com.smg.knowledge.node.Component;
 import com.smg.knowledge.node.Fault;
 import com.smg.maintenance.service.MaintenanceService;
 import com.smg.maintenance.feign.LogFeignClient;
@@ -114,6 +115,12 @@ public class FaultController {
         logger.info("Request received to search faults by views with deviceDescription: {}, componentDescription: {}, faultDescription: {}", deviceDescription, componentDescription, faultDescription);
         createLog(String.format("Searching faults by views with deviceDescription: %s, componentDescription: %s, faultDescription: %s", deviceDescription, componentDescription, faultDescription), "System", true);
         return maintenanceService.searchFaultsByViews(deviceDescription, componentDescription, faultDescription);
+    }
+
+    @GetMapping("/searchComponent/{faultId}")
+    public Component searchComponentByFaultId(@PathVariable String faultId){
+        logger.info("Received request to search component by fault ID: {}", faultId);
+        return maintenanceService.getComponentByFaultId(faultId);
     }
 
     @GetMapping("/{faultyComponentId}/disassembly-order")

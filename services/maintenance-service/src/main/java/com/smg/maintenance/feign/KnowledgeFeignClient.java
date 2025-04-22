@@ -1,5 +1,6 @@
 package com.smg.maintenance.feign;
 
+import com.smg.knowledge.node.Component;
 import com.smg.knowledge.node.Fault;
 import com.smg.knowledge.node.Procedure;
 import com.smg.knowledge.node.Solution;
@@ -34,6 +35,9 @@ public interface KnowledgeFeignClient {
     @DeleteMapping("/fault/{id}")
     void deleteFault(@PathVariable String id);
 
+    @GetMapping("/fault/views/{faultId}")
+    Component getComponentByFaultId(@PathVariable String faultId);
+
     // SolutionController
     @PostMapping("/solution")
     Solution saveSolutionWithFault(@RequestBody Solution solution, @RequestParam String faultId);
@@ -61,4 +65,7 @@ public interface KnowledgeFeignClient {
 
     @GetMapping("/component/{faultyComponentId}/assembly-order")
     List<String> getAssemblyOrder(@PathVariable String faultyComponentId);
+
+    @GetMapping("/procedure/{id}")
+    Procedure getProcedureById(@PathVariable String id);
 }

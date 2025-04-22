@@ -28,6 +28,7 @@ public class ComponentController {
 
     @GetMapping("/{id}")
     public Component getComponentById(@PathVariable String id) {
+        System.out.println("\n66666\n");
         logger.info("Received request to get component by ID: {}", id);
         return componentService.findById(id);
     }

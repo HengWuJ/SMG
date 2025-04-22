@@ -40,4 +40,12 @@ public class ProcedureController {
         createLog("Fetching all procedures.", "System", true);
         return maintenanceService.getAllProcedures();
     }
+
+    @GetMapping("/{id}")
+    public Procedure getProcedureById(@PathVariable String id) {
+        logger.info("Request received to fetch procedure by ID: {}", id);
+        createLog(String.format("Fetching procedure by ID: %s", id), "System", true);
+        return maintenanceService.getProcedureById(id);
+    }
+
 }

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/solution")
@@ -33,6 +34,11 @@ public class SolutionController {
         logFeignClient.createLog(log);
     }
 
+    @GetMapping
+    public List<Solution> getAllSolutions() {
+        logger.info("Received request to get all solutions");
+        return kbmService.getAllSolutions();
+    }
     @PostMapping("/withFault")
     public Solution saveSolutionWithFault(@RequestBody Solution solution, @RequestParam String faultId) {
         logger.info("Request received to save a new solution with fault ID: {}", faultId);

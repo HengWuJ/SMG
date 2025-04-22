@@ -1,5 +1,6 @@
 package com.smg.maintenance.service;
 
+import com.smg.knowledge.node.Component;
 import com.smg.knowledge.node.Fault;
 import com.smg.knowledge.node.Procedure;
 import com.smg.knowledge.node.Solution;
@@ -111,6 +112,17 @@ public class MaintenanceService {
         logger.info("Fault deleted with ID: {}", id);
     }
 
+    public Component getComponentByFaultId(String faultId) {
+        if (faultId == null) {
+            logger.error("Attempted to fetch component with null fault ID.");
+            throw new IllegalArgumentException("Fault ID cannot be null");
+        }
+        logger.info("Fetching component by fault ID: {}", faultId);
+        Component component = knowledgeFeignClient.getComponentByFaultId(faultId);
+        logger.info("Fetched component: {}", component);
+        return component;
+    }
+
     // Solution related methods
     public Solution saveSolutionWithFault(Solution solution, String faultId) {
         if (solution == null) {
@@ -210,5 +222,10 @@ public class MaintenanceService {
     public List<String> getAssemblyOrder(String faultyComponentId) {
         logger.info("Getting assembly order for component with ID: {}", faultyComponentId);
         return knowledgeFeignClient.getAssemblyOrder(faultyComponentId);
+    }
+
+    public Procedure getProcedureById(String id) {
+        logger.info("Getting procedure by ID: {}", id);
+        return knowledgeFeignClient.getProcedureById(id);
     }
 }

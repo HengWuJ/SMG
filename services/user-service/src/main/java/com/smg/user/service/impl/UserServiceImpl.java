@@ -56,8 +56,6 @@ public class UserServiceImpl implements UserService {
             logger.warn("Attempt to create a null user.");
             return;
         }
-        String encryptedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encryptedPassword);
         if(user.getFaceToken()!=null){
             logger.info("Creating new user: {}", user.getUsername());
             userMapper.insertWithToken(user);

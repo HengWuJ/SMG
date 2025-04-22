@@ -3,6 +3,7 @@ package com.smg.kbm.controller;
 import com.smg.kbm.service.KbmService;
 import com.smg.knowledge.node.Component;
 import com.smg.kbm.feign.LogFeignClient;
+import com.smg.knowledge.node.Fault;
 import com.smg.pojo.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/component")
@@ -116,5 +118,12 @@ public class ComponentController {
         logger.info("Received request to delete precedes relationship between components with IDs: {} and {}", sourceId, targetId);
         createLog(String.format("Deleting precedes relationship between components with IDs: %s and %s", sourceId, targetId), "System", true);
         kbmService.deletePrecedesRelationship(sourceId, targetId);
+    }
+
+    @GetMapping("/{faultyComponentId}/faults")
+    public Set<Fault> getFaultByComponentId(@PathVariable String faultyComponentId) {
+        logger.info("Received request to get faults for component with ID: {}", faultyComponentId);
+        createLog(String.format("Getting faults for component with ID: %s", faultyComponentId), "System", true);
+        return kbmService.getComponentById(faultyComponentId).getFaults();
     }
 }

@@ -64,5 +64,5 @@ public interface ComponentRepository extends Neo4jRepository<Component, String> 
             "CALL apoc.algo.topologicalSort('Component', 'PRECEDES') YIELD value AS componentId " +
             "MATCH (c:Component {componentId: componentId}) " +
             "RETURN c ORDER BY id(c) DESC")
-    List<Component> getReverseTopologicalOrder();
+    Component getReverseTopologicalOrder();
 }

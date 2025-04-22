@@ -1,5 +1,6 @@
 package com.smg.knowledge.controller;
 
+import com.smg.knowledge.node.Component;
 import com.smg.knowledge.node.Fault;
 import com.smg.knowledge.service.FaultService;
 import org.slf4j.Logger;
@@ -88,5 +89,11 @@ public class FaultController {
             throw new IllegalArgumentException("At least one of deviceDescription, componentDescription, or faultDescription must be provided");
         }
         return faultService.searchFaults(deviceDescription, componentDescription, faultDescription);
+    }
+
+    @GetMapping("/views/{faultId}")
+    public Component getComponentByFaultId(@PathVariable String faultId) {
+        logger.info("Received request to get component by fault ID: {}", faultId);
+        return faultService.getComponentByFaultId(faultId);
     }
 }

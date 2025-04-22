@@ -19,7 +19,8 @@ public class Component implements Serializable {
     private String warrantyExpirationDate;
     private Set<String> replacementHistory;// 替换历史记录
     private String partNumber;
-    private int stockQuantity;
+//    private int stockQuantity;
+    private Integer stockQuantity;
     private String criticalityLevel;// 如：关键、重要、一般
 
     @Relationship(type = "CAUSES", direction = Relationship.Direction.OUTGOING)

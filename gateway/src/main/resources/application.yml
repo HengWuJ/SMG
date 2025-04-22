@@ -11,6 +11,13 @@ spring:
       discovery:
         locator:
           enabled: true
+      global-cors:
+        cors-configurations:
+          '[/**]': # 全局路径匹配符
+            allowed-origins: "http://localhost:5173"  # 允许所有来源
+            allowed-methods: "*"  # 允许所有方法
+            allowed-headers: "*"   # 允许所有请求头
+            allow-credentials: true
       routes:
         - id: knowledge-service
           uri: http://localhost:8002
